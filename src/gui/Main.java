@@ -7,6 +7,7 @@ import javafx.stage.Stage;
 
 public class Main extends Application {
 
+	//application
 	@Override
     public void start(Stage stage) {
         stage.setTitle("Library Management System");
