@@ -1,3 +1,4 @@
+
 package finalproject;
 import java.util.List;
 
@@ -47,8 +48,29 @@ public class Book {
     this.available = true;
     this.borrowCount = 0;
     this.categories = categories;
+<<<<<<< HEAD
     }
 
+=======
+    }
+    
+ // Minimal constructor for older DAO queries
+    public Book(int id, String title, String author, boolean available) {
+        this.id = id;
+        this.title = title;
+        this.author = author;
+        this.available = available;
+    }
+ // Minimal constructor for UI (used in MainView: new Book(title, author))
+    public Book(String title, String author) {
+        this.title = title;
+        this.author = author;
+        this.available = true;
+        this.borrowCount = 0;
+    }
+
+
+>>>>>>> 27eddc7 (Align Book model, DAO, service, and GUI; add LoanDAO and EmailService stub)
  // Getters
     public int getId() { return id; }
     public String getTitle() { return title; }

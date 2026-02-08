@@ -100,7 +100,8 @@ public class MainView extends BorderPane {
                         showAlert("Validation", "Title and Author are required.");
                         return null;
                     }
-                    return new Book(title, author);
+                    return new Book(title, author); //error
+                   
                 }
                 return null;
             });

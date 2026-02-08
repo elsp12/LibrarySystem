@@ -1,10 +1,13 @@
 package finalproject;
 
+<<<<<<< HEAD
 //import java.io.Serializable;-removed since not working with files 
+=======
+>>>>>>> 27eddc7 (Align Book model, DAO, service, and GUI; add LoanDAO and EmailService stub)
 import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
 
 public class Loan {
+<<<<<<< HEAD
     
 	private int id; // DB-generated
 	private Book book;
@@ -31,10 +34,37 @@ public class Loan {
                 LocalDate returnDate, double fine, boolean extensionRequested) {
         this(book, member);
         this.id = id;
+=======
+    private int id;                 // DB PK
+    private Book book;
+    private Member member;
+    private LocalDate issueDate;
+    private LocalDate dueDate;
+    private LocalDate returnDate;   // null if active
+    private double fine;
+
+    // new loan (DB generates id)
+    public Loan(Book book, Member member, LocalDate issueDate, LocalDate dueDate) {
+        this.book = book;
+        this.member = member;
+        this.issueDate = issueDate;
+        this.dueDate = dueDate;
+        this.returnDate = null;
+        this.fine = 0;
+    }
+
+    // DB-loaded loan
+    public Loan(int id, Book book, Member member, LocalDate issueDate, LocalDate dueDate,
+                LocalDate returnDate, double fine) {
+        this.id = id;
+        this.book = book;
+        this.member = member;
+>>>>>>> 27eddc7 (Align Book model, DAO, service, and GUI; add LoanDAO and EmailService stub)
         this.issueDate = issueDate;
         this.dueDate = dueDate;
         this.returnDate = returnDate;
         this.fine = fine;
+<<<<<<< HEAD
         this.extensionRequested = extensionRequested;
     }
     
@@ -72,6 +102,20 @@ public class Loan {
     }
 
     // Getters
+=======
+    }
+
+    public boolean isActive() { return returnDate == null; }
+
+    public boolean isOverdue() {
+        return isActive() && LocalDate.now().isAfter(dueDate);
+    }
+
+    public void closeLoan() {
+        this.returnDate = LocalDate.now();
+    }
+
+>>>>>>> 27eddc7 (Align Book model, DAO, service, and GUI; add LoanDAO and EmailService stub)
     public int getId() { return id; }
     public Book getBook() { return book; }
     public Member getMember() { return member; }
@@ -79,6 +123,12 @@ public class Loan {
     public LocalDate getDueDate() { return dueDate; }
     public LocalDate getReturnDate() { return returnDate; }
     public double getFine() { return fine; }
+<<<<<<< HEAD
     public boolean isExtensionRequested() { return extensionRequested; }
 
+=======
+
+    public void setId(int id) { this.id = id; }
+    public void setFine(double fine) { this.fine = fine; }
+>>>>>>> 27eddc7 (Align Book model, DAO, service, and GUI; add LoanDAO and EmailService stub)
 }
