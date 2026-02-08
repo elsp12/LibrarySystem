@@ -1,26 +1,38 @@
 package finalproject;
 
-import java.io.Serializable;
-import java.time.LocalDate;
+public class Book {
+    private int id;              // DB primary key
+    private String title;
+    private String author;
+    private boolean available;
 
-public class Book implements Serializable {
-	 private String title;
-	    private String author;
-	    private boolean available;
+    // For loading from DB
+    public Book(int id, String title, String author, boolean available) {
+        this.id = id;
+        this.title = title;
+        this.author = author;
+        this.available = available;
+    }
 
-	    public Book(String title,String author) {
-	        this.title = title;
-	        this.author=author;
-	        this.available=true;
-	    }
+    // For creating from UI (DB will generate id)
+    public Book(String title, String author) {
+        this(0, title, author, true);
+    }
 
-	    public String getTitle() { return title; }
-	    public String getAuthor() { return author; }
-	    public boolean isAvailable() { return available; }
-	    public void setAvailable(boolean available) { this.available = available; }
+    public int getId() { return id; }
+    public void setId(int id) { this.id = id; }
 
-	    @Override
-	    public String toString() {
-	    	return title + " by " + author + (available ? " (Available)" : " (Issued)");
-	    }
+    public String getTitle() { return title; }
+    public void setTitle(String title) { this.title = title; }
+
+    public String getAuthor() { return author; }
+    public void setAuthor(String author) { this.author = author; }
+
+    public boolean isAvailable() { return available; }
+    public void setAvailable(boolean available) { this.available = available; }
+
+    @Override
+    public String toString() {
+        return title + " by " + author + (available ? " (Available)" : " (Issued)");
+    }
 }
