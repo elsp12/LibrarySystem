@@ -3,6 +3,8 @@ package gui;
 import finalproject.Book;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -12,14 +14,20 @@ import service.dao.BookDAO;
 public class MainView extends BorderPane {
 
     private final BookDAO bookDAO = new BookDAO();
-    private final ObservableList<Book> data = FXCollections.observableArrayList();
+
+    // master list from DB (unfiltered)
+    private final ObservableList<Book> masterData = FXCollections.observableArrayList();
 
     // keep table as a field so we can refresh reliably
-    private final TableView<Book> table = new TableView<>(data);
+    private final TableView<Book> table = new TableView<>();
 
     public MainView() {
 
-        // Columns
+        // SEARCH BAR
+        TextField searchField = new TextField();
+        searchField.setPromptText("Search by title or author...");
+
+        // TABLE COLUMNS
         TableColumn<Book, String> titleCol = new TableColumn<>("Title");
         titleCol.setCellValueFactory(cell ->
                 new javafx.beans.property.SimpleStringProperty(cell.getValue().getTitle()));
@@ -34,9 +42,33 @@ public class MainView extends BorderPane {
                         cell.getValue().isAvailable() ? "Available" : "Issued"
                 ));
 
-        table.getColumns().addAll(titleCol, authorCol, statusCol);
+        table.getColumns().add(titleCol);
+        table.getColumns().add(authorCol);
+        table.getColumns().add(statusCol);
 
-        // Buttons
+        // FILTERING LOGIC
+        FilteredList<Book> filteredData = new FilteredList<>(masterData, b -> true);
+
+        searchField.textProperty().addListener((obs, oldValue, newValue) -> {
+            String filter = (newValue == null) ? "" : newValue.trim().toLowerCase();
+
+            filteredData.setPredicate(book -> {
+                if (filter.isEmpty()) return true;
+
+                String title = (book.getTitle() == null) ? "" : book.getTitle().toLowerCase();
+                String author = (book.getAuthor() == null) ? "" : book.getAuthor().toLowerCase();
+
+                return title.contains(filter) || author.contains(filter);
+            });
+        });
+
+        SortedList<Book> sortedData = new SortedList<>(filteredData);
+        sortedData.comparatorProperty().bind(table.comparatorProperty());
+        table.setItems(sortedData);
+
+        // -------------------------
+        // BUTTONS
+        // -------------------------
         Button addBook = new Button("Add Book");
         Button issueBook = new Button("Issue Book");
         Button returnBook = new Button("Return Book");
@@ -123,7 +155,11 @@ public class MainView extends BorderPane {
         });
 
         HBox controls = new HBox(10, addBook, issueBook, returnBook);
-        setCenter(table);
+
+        // Put search bar ABOVE the table
+        VBox centerLayout = new VBox(10, searchField, table);
+
+        setCenter(centerLayout);
         setBottom(controls);
 
         // Load from DB at startup
@@ -131,7 +167,7 @@ public class MainView extends BorderPane {
     }
 
     private void loadBooks() {
-        data.setAll(bookDAO.findAll());
+        masterData.setAll(bookDAO.findAll());
     }
 
     private void showAlert(String title, String msg) {
@@ -142,3 +178,4 @@ public class MainView extends BorderPane {
         a.showAndWait();
     }
 }
+
