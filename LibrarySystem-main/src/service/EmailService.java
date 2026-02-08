@@ -1,3 +1,4 @@
+
 <<<<<<< HEAD
 package finalproject;
 import javax.mail.*;
@@ -18,16 +19,14 @@ public class EmailService {
 	    public void sendOverdueEmail(String recipientEmail, String borrowerName,
 <<<<<<< HEAD
 	                                 String bookTitle, int daysLate, double fine) throws MessagingException {
-=======
+
 	                                 String bookTitle, int daysLate, double fine) throws MessagingException { // error
->>>>>>> 27eddc7 (Align Book model, DAO, service, and GUI; add LoanDAO and EmailService stub)
 	        Properties props = new Properties();
 	        props.put("mail.smtp.auth", "true");
 	        props.put("mail.smtp.starttls.enable", "true");
 	        props.put("mail.smtp.host", "smtp.gmail.com"); // example
 	        props.put("mail.smtp.port", "587");
 
-<<<<<<< HEAD
 	        Session session = Session.getInstance(props,
 	            new Authenticator() {
 	                protected PasswordAuthentication getPasswordAuthentication() {

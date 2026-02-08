@@ -1,8 +1,9 @@
-
 package finalproject;
+
 import java.util.List;
 
 public class Book {
+
     private int id;              // DB primary key
     private String title;
     private String author;
@@ -13,7 +14,7 @@ public class Book {
     private String language;
     private int edition;
     private int borrowCount;
-    
+
     // Physical location
     private String shelf;
     private int row;
@@ -21,47 +22,60 @@ public class Book {
     // Categories
     private List<String> categories;
 
-    // For loading from DB + added attributes 
+    /* ================= CONSTRUCTORS ================= */
+
+    // FULL constructor for loading from DB
     public Book(int id, String title, String author, String genre, String isbn,
-            int publicationYear, String language, int edition,
-            String shelf, int row, boolean available, int borrowCount,
-            List<String> categories) {
-    this(title, author, genre, isbn, publicationYear, language, edition, shelf, row, categories);
-    this.id = id;
-    this.available = available;
-    this.borrowCount = borrowCount;
-   }
+                int publicationYear, String language, int edition,
+                String shelf, int row, boolean available, int borrowCount,
+                List<String> categories) {
 
-    // For creating from UI (DB will generate id)
+        this.title = title;
+        this.author = author;
+        this.genre = genre;
+        this.isbn = isbn;
+        this.publicationYear = publicationYear;
+        this.language = language;
+        this.edition = edition;
+        this.shelf = shelf;
+        this.row = row;
+        this.categories = categories;
+
+        this.id = id;
+        this.available = available;
+        this.borrowCount = borrowCount;
+    }
+
+    // FULL constructor for UI (DB generates id)
     public Book(String title, String author, String genre, String isbn,
-            int publicationYear, String language, int edition,
-            String shelf, int row, List<String> categories) {
-    this.title = title;
-    this.author = author;
-    this.genre = genre;
-    this.isbn = isbn;
-    this.publicationYear = publicationYear;
-    this.language = language;
-    this.edition = edition;
-    this.shelf = shelf;
-    this.row = row;
-    this.available = true;
-    this.borrowCount = 0;
-    this.categories = categories;
-<<<<<<< HEAD
+                int publicationYear, String language, int edition,
+                String shelf, int row, List<String> categories) {
+
+        this.title = title;
+        this.author = author;
+        this.genre = genre;
+        this.isbn = isbn;
+        this.publicationYear = publicationYear;
+        this.language = language;
+        this.edition = edition;
+        this.shelf = shelf;
+        this.row = row;
+        this.categories = categories;
+
+        this.available = true;
+        this.borrowCount = 0;
     }
 
-=======
-    }
-    
- // Minimal constructor for older DAO queries
+    // MINIMAL constructor for DAO queries (findAll)
     public Book(int id, String title, String author, boolean available) {
         this.id = id;
         this.title = title;
         this.author = author;
         this.available = available;
+        this.borrowCount = 0;
     }
- // Minimal constructor for UI (used in MainView: new Book(title, author))
+
+    // MINIMAL constructor for UI (Add Book dialog)
     public Book(String title, String author) {
         this.title = title;
         this.author = author;
@@ -69,9 +83,8 @@ public class Book {
         this.borrowCount = 0;
     }
 
+    /* ================= GETTERS ================= */
 
->>>>>>> 27eddc7 (Align Book model, DAO, service, and GUI; add LoanDAO and EmailService stub)
- // Getters
     public int getId() { return id; }
     public String getTitle() { return title; }
     public String getAuthor() { return author; }
@@ -85,14 +98,16 @@ public class Book {
     public String getShelf() { return shelf; }
     public int getRow() { return row; }
     public List<String> getCategories() { return categories; }
-    
- // Setters (only for fields that can change)
+
+    /* ================= SETTERS ================= */
+
     public void setId(int id) { this.id = id; }
     public void setAvailable(boolean available) { this.available = available; }
     public void setShelf(String shelf) { this.shelf = shelf; }
     public void setRow(int row) { this.row = row; }
 
- // Methods to mark book as issued or returned
+    /* ================= BUSINESS LOGIC ================= */
+
     public void markIssued() {
         this.available = false;
         this.borrowCount++;
@@ -104,7 +119,10 @@ public class Book {
 
     @Override
     public String toString() {
-        return title + " by " + author + (available ? " (Available)" : " (Issued)") +
-               " | Genre: " + genre + " | ISBN: " + isbn + " | Borrowed: " + borrowCount + " times";
+        return title + " by " + author +
+               (available ? " (Available)" : " (Issued)") +
+               " | Genre: " + genre +
+               " | ISBN: " + isbn +
+               " | Borrowed: " + borrowCount + " times";
     }
 }
